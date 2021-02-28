@@ -5,13 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7,Debian 8/9,Ubuntu 16+
 #	Description: BBR+BBR魔改版+BBRplus+Lotserver
-#	Version: 1.3.2
-#	Author: 千影,cx9208
-#	Blog: https://www.94ish.me/
+#	Version: 1.3.3
 #=================================================
 
-sh_ver="1.3.2"
-github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
+sh_ver="1.3.3"
+github="https://git.zerotam.top/https://github.com/CoiaPrant"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -22,18 +20,17 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 installbbr(){
 	kernel_version="4.11.8"
 	if [[ "${release}" == "centos" ]]; then
-		rpm --import http://${github}/bbr/${release}/RPM-GPG-KEY-elrepo.org
-		yum install -y http://${github}/bbr/${release}/${version}/${bit}/kernel-ml-${kernel_version}.rpm
+		rpm --import ${github}/Linux-NetSpeed/master/bbr/${release}/RPM-GPG-KEY-elrepo.org
+		yum install -y ${github}/Linux-NetSpeed/master/bbr/${release}/${version}/${bit}/kernel-ml-${kernel_version}.rpm
 		yum remove -y kernel-headers
-		yum install -y http://${github}/bbr/${release}/${version}/${bit}/kernel-ml-headers-${kernel_version}.rpm
-		yum install -y http://${github}/bbr/${release}/${version}/${bit}/kernel-ml-devel-${kernel_version}.rpm
+		yum install -y ${github}/Linux-NetSpeed/master/bbr/${release}/${version}/${bit}/kernel-ml-headers-${kernel_version}.rpm
+		yum install -y ${github}/Linux-NetSpeed/master/bbr/${release}/${version}/${bit}/kernel-ml-devel-${kernel_version}.rpm
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		mkdir bbr && cd bbr
-		wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
-		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/linux-headers-${kernel_version}-all.deb
-		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
-		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
-	
+		wget https://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbr/debian-ubuntu/linux-headers-${kernel_version}-all.deb
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbr/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbr/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
 		dpkg -i libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
 		dpkg -i linux-headers-${kernel_version}-all.deb
 		dpkg -i linux-headers-${kernel_version}.deb
@@ -55,14 +52,14 @@ installbbr(){
 installbbrplus(){
 	kernel_version="4.14.129-bbrplus"
 	if [[ "${release}" == "centos" ]]; then
-		wget -N --no-check-certificate https://${github}/bbrplus/${release}/${version}/kernel-${kernel_version}.rpm
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbrplus/${release}/${version}/kernel-${kernel_version}.rpm
 		yum install -y kernel-${kernel_version}.rpm
 		rm -f kernel-${kernel_version}.rpm
 		kernel_version="4.14.129_bbrplus" #fix a bug
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		mkdir bbrplus && cd bbrplus
-		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
-		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbrplus/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbrplus/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
 		dpkg -i linux-headers-${kernel_version}.deb
 		dpkg -i linux-image-${kernel_version}.deb
 		cd .. && rm -rf bbrplus
@@ -81,17 +78,16 @@ installbbrplus(){
 #安装Lotserver内核
 installlot(){
 	if [[ "${release}" == "centos" ]]; then
-		rpm --import http://${github}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
+		rpm --import ${github}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
 		yum remove -y kernel-firmware
-		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-firmware-${kernel_version}.rpm
-		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-${kernel_version}.rpm
+		yum install -y ${github}/lotserver/${release}/${version}/${bit}/kernel-${kernel_version}.rpm
 		yum remove -y kernel-headers
-		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-headers-${kernel_version}.rpm
-		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-devel-${kernel_version}.rpm
+		yum install -y ${github}/lotserver/${release}/${version}/${bit}/kernel-headers-${kernel_version}.rpm
+		yum install -y ${github}/lotserver/${release}/${version}/${bit}/kernel-devel-${kernel_version}.rpm
 	elif [[ "${release}" == "ubuntu" ]]; then
-		bash <(wget --no-check-certificate -qO- "http://${github}/Debian_Kernel.sh")
+		bash <(wget --no-check-certificate -qO- "${github}/Linux-NetSpeed/master/Debian_Kernel.sh")
 	elif [[ "${release}" == "debian" ]]; then
-		bash <(wget --no-check-certificate -qO- "http://${github}/Debian_Kernel.sh")
+		bash <(wget --no-check-certificate -qO- "${github}/Linux-NetSpeed/master/Debian_Kernel.sh")
 	fi
 	detele_kernel
 	BBR_grub
@@ -128,7 +124,7 @@ startbbrmod(){
 	if [[ "${release}" == "centos" ]]; then
 		yum install -y make gcc
 		mkdir bbrmod && cd bbrmod
-		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbr/tcp_tsunami.c
 		echo "obj-m:=tcp_tsunami.o" > Makefile
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
 		chmod +x ./tcp_tsunami.ko
@@ -145,7 +141,7 @@ startbbrmod(){
 		fi
 		apt-get -y install make gcc
 		mkdir bbrmod && cd bbrmod
-		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbr/tcp_tsunami.c
 		echo "obj-m:=tcp_tsunami.o" > Makefile
 		ln -s /usr/bin/gcc /usr/bin/gcc-4.9
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
@@ -168,7 +164,7 @@ startbbrmod_nanqinlang(){
 	if [[ "${release}" == "centos" ]]; then
 		yum install -y make gcc
 		mkdir bbrmod && cd bbrmod
-		wget -N --no-check-certificate https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/bbr/centos/tcp_nanqinlang.c
+		wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/bbr/centos/tcp_nanqinlang.c
 		echo "obj-m := tcp_nanqinlang.o" > Makefile
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
 		chmod +x ./tcp_nanqinlang.ko
@@ -185,7 +181,7 @@ startbbrmod_nanqinlang(){
 		fi
 		apt-get -y install make gcc-4.9
 		mkdir bbrmod && cd bbrmod
-		wget -N --no-check-certificate https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/bbr/tcp_nanqinlang.c
+		wget -N --no-check-certificate ${github}/master/bbr/tcp_nanqinlang.c
 		echo "obj-m := tcp_nanqinlang.o" > Makefile
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
 		install tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel
@@ -209,7 +205,7 @@ startlotserver(){
 		apt-get update
 		apt-get install ethtool
 	fi
-	bash <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/chiakge/lotServer/master/Install.sh) install
+	bash <(wget --no-check-certificate -qO- raw.githubusercontent.com/CoiaPrant/lotServer/master/Install.sh) install
 	sed -i '/advinacc/d' /appex/etc/config
 	sed -i '/maxmode/d' /appex/etc/config
 	echo -e "advinacc=\"1\"
@@ -257,7 +253,7 @@ remove_all(){
 	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_max_orphans/d' /etc/sysctl.conf
 	if [[ -e /appex/bin/lotServer.sh ]]; then
-		bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/lotServer/raw/master/Install.sh) uninstall
+		bash <(wget --no-check-certificate -qO- ${github}/lotServer/master/Install.sh) uninstall
 	fi
 	clear
 	echo -e "${Info}:清除加速完成。"
@@ -313,14 +309,14 @@ net.ipv4.ip_forward = 1">>/etc/sysctl.conf
 #更新脚本
 Update_Shell(){
 	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
-	sh_new_ver=$(wget --no-check-certificate -qO- "http://${github}/tcp.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
+	sh_new_ver=$(wget --no-check-certificate -qO- "${github}/Linux-NetSpeed/master/tcp.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && start_menu
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
 		read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [Yy] ]]; then
-			wget -N --no-check-certificate http://${github}/tcp.sh && chmod +x tcp.sh
+			wget -N --no-check-certificate ${github}/Linux-NetSpeed/master/tcp.sh && chmod +x tcp.sh
 			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
 		else
 			echo && echo "	已取消..." && echo
@@ -335,7 +331,6 @@ Update_Shell(){
 start_menu(){
 clear
 echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
-  -- 就是爱生活 | 94ish.me --
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
 ————————————内核管理————————————
@@ -362,7 +357,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 		
 	fi
 echo
-read -p " 请输入数字 [0-11]:" num
+read -ep " 请输入数字 [0-11]:" num
 case "$num" in
 	0)
 	Update_Shell
@@ -403,7 +398,7 @@ case "$num" in
 	*)
 	clear
 	echo -e "${Error}:请输入正确数字 [0-11]"
-	sleep 5s
+	sleep 3s
 	start_menu
 	;;
 esac
@@ -413,18 +408,16 @@ esac
 #删除多余内核
 detele_kernel(){
 	if [[ "${release}" == "centos" ]]; then
-		rpm_total=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | wc -l`
-		if [ "${rpm_total}" > "1" ]; then
+		rpm_total=`rpm -qa | grep kernel | grep -v - | grep -v "${kernel_version}" | grep -v "noarch" | wc -l`
+		if [ "${rpm_total}" != "0" ]; then
 			echo -e "检测到 ${rpm_total} 个其余内核，开始卸载..."
 			for((integer = 1; integer <= ${rpm_total}; integer++)); do
-				rpm_del=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
+				rpm_del=`rpm -qa | grep kernel | grep -v - |grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
 				echo -e "开始卸载 ${rpm_del} 内核..."
 				rpm --nodeps -e ${rpm_del}
 				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
 			done
 			echo --nodeps -e "内核卸载完毕，继续..."
-		else
-			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		deb_total=`dpkg -l | grep linux-image | awk '{print $2}' | grep -v "${kernel_version}" | wc -l`
